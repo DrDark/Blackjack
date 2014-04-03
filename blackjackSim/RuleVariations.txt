@@ -1,0 +1,22 @@
+Rule,                                            Effect
+‘Single deck’,                                   0.48
+‘Early surrender against ten’,                   0.24
+‘Player may double on any number of cards’,	 0.23
+‘Double deck’,                                   0.19
+‘Player may draw to split aces’,                 0.19
+‘Six-card Charlie’,                              0.16
+‘Player may resplit aces’,                       0.08
+‘Late surrender’,                                0.08
+‘Four decks’,                                    0.06
+‘Five decks’,                                    0.03
+‘Six decks’,                                     0.02
+‘Split to only 3 hands’,                        -0.01
+‘Player may double on 9-11 only’,               -0.09
+‘Split to only 2 hands’,                        -0.10
+‘European no hole card’,                        -0.11
+‘Player may not double after splitting’,        -0.14
+‘Player may double on 10;11 only’,              -0.18
+‘Dealer hits on soft 17’,                       -0.22
+‘Blackjack pays 7-5’,                           -0.45
+‘Blackjack pays 6-5’,                           -1.39
+‘Blackjacks pay 1 to 1’,                        -2.27

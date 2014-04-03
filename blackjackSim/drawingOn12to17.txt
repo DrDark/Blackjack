@@ -1,0 +1,73 @@
+'''One million hands, dealing a single card each to 12 - 17. We are interested in other values too, but we are particularly interested in the chance of busting having drawn a single card (on a hand that adds up to the column value): 
+           12       13       14       15       16       17
+17     7.7144   7.7001   7.7385   7.7110   7.6987   0.0000
+18     7.6948   7.6964   7.6980   7.6802   7.6481   7.7636
+19     7.6592   7.7279   7.6868   7.6600   7.6938   7.7198
+20     7.6664   7.6650   7.6462   7.6777   7.6910   7.6535
+21     7.6994   7.7055   7.6652   7.6552   7.7063   7.6648
+Bust  30.7351  38.4574  46.1760  53.8238  61.5410  69.1775
+Chances of bust if you play dealer's strategy: hit until you reach 16 or bust:
+Bust  48.4300  52.1100	56.5400	 58.7500  61.3700  no value
+Difference: -17.7, -13.65, -10.36 ,  -5.,   0.
+
+Analytically, the first set of numbers, after a single card, should be:
+Bust at 4/13, 5/13, 6/13, 7/13, 8/13, 9/13
+
+30.76, 38.46, 46.15, 53.84, 61.53,  69.23, pretty close. 
+Notice finally that the columns for 12, 13, etc. don't add up to 100%. 
+This is clearly the result of the possibility of drawing a single card 
+and obtaining less than 17 total. This possibility starts at 0% at 16, 
+and increases by 1/13 with each card as it reaches 12. 
+
+Chance < 17:
+00.00% when starting with 16
+07.70% with 15
+15.40% with 14
+23.08% with 13 and
+30.77% with 12
+
+The differences nicely account for the increased busts as one chases 16 
+to stop taking cards. '''
+
+#Single card draw vs. going all the way to 16:
+array([30.7351,  38.4574,  46.1760,  53.8238,  61.5410])-
+    array([48.4300,  52.1100,	56.5400,	 58.7500,  61.3700])
+
+#Analytically determining the same (assuming continuous shuffle):
+4/13., 5/13., 6/13., 7/13., 8/13., 9/13.
+print 1/13. # at 15
+print 2/13. # at 14
+print 3/13. # at 13
+print 4/13. # at 12
+
+#Chance of busting upon drawing a second card: 
+-17.7/(4/13.), -13.65/(3/13.), -10.36/(2/13.),  -5./(1/13.)
+dictA={}
+# ----- the crux function for bust determination. Goes for a million round
+# spin. Takes a while, but much less than a previous version.
+for i in range(12, 18):
+    dictA[i]={k:[addACard(i) for j in range(1000000)].count(k) for k in range(17, 22)+['Bust']}
+dat1 = DataFrame(dictA)/10000.
+print dat1
+
+
+‘’’ Here is the table for going on all the way to 16 (dealer’s way again). These numbers are much more easily established analytically than most: 
+
+dict2 = {12: {17: 994, 18: 1096, 19: 993, 20: 1032, 21: 1042, 'BJ': 0, 'Bust': 4843},
+ 13: {17: 917, 18: 910, 19: 996, 20: 976, 21: 990, 'BJ': 0, 'Bust': 5211},
+ 14: {17: 891, 18: 857, 19: 857, 20: 914, 21: 827, 'BJ': 0, 'Bust': 5654},
+ 15: {17: 859, 18: 837, 19: 802, 20: 816, 21: 811, 'BJ': 0, 'Bust': 5875},
+ 16: {17: 785, 18: 784, 19: 768, 20: 800, 21: 726, 'BJ': 0, 'Bust': 6137}}
+
+dat = DataFrame(dict2)
+dat/100.
+
+‘’’ The result is: 
+           12	  13      14	  15	  16
+17	 9.94	 9.17	 8.91	 8.59	 7.85
+18	 10.96	 9.10	 8.57	 8.37	 7.84
+19	 9.93	 9.96	 8.57	 8.02	 7.68
+20	 10.32	 9.76	 9.14	 8.16	 8.00
+21	 10.42	 9.90	 8.27	 8.11	 7.26
+BJ	 0.00	 0.00	 0.00	 0.00	 0.00
+Bust	 48.43	 52.11	 56.54	 58.75	 61.37 ‘’’

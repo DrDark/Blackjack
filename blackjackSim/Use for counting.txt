@@ -1,0 +1,11 @@
+counting and strategy:
+
+reverse: if the number is low and deck is biased try betting hi
+
+can counting reveal imbalance? is average count is smaller and bigger than 0
+
+we use blackjacks to reveal the biased deck
+
+play with bet sizes in experiments. 
+
+what would you do to counter the basic strategy? keeping the mean count near 0. 

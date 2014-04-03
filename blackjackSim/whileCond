@@ -1,0 +1,35 @@
+Four Conditions:
+
+0. Not bust
+
+1. soft: 
+
+hit on everything <= 17
+hit on 18  
+
+not bust and (not isinstance(total, int) and ((dealer in [9, 10, ‘A’] and total[1] < 18) or total[1] < 17)) and  
+
+while not Bust(total) and (isinstance(total, int) and (total < 17 and dealer in [7, 8, 9, 10, 'A']) or  (total < 13 and dealer in [2, 3, 4, 5, 6]) or (total < 12 and dealer in [4, 5, 6]  :
+    
+
+2. hard. 
+
+stay on 17 and above
+
+stay on 13 and above if dealer in [2-6]
+
+stay on 12 unless dealer has [4, 5, 6]
+
+
+
+deal cards
+
+decide split, double, surrender
+
+execute what you chose
+
+play hand 
+
+dealer play
+
+results
