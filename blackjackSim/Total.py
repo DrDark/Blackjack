@@ -4,6 +4,9 @@ Finding a total of a hand.
 
 @author: darko
 """
+from numpy import array
+from numpy import unique
+
 
 def AddAce(card):
     if card == 'A': return AddAce(array([1, 11])) # Both cards aces

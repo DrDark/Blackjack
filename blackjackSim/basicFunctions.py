@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Apr  5 15:56:04 2014
-
+Basic functions required for Blackjack. Build a deck, shuffle, add up cards, 
+compare hands, player and dealer basic strategies.
 @author: darko
 """
 from numpy.random import shuffle
@@ -99,11 +99,8 @@ def dealerPlay(dealer, deck, hard = 17, soft = 17):
             
             
 # Basic strategy: 
-def basicStrategy(dealer, card1, deck):
-    player = [card1]
-    if len(deck) == 0: deck = deckShuffle(1)
-    card2 = drawACard(deck)
-    player.append(card2)
+def basicStrategy(dealer, card1, card2, deck):
+    player = [card1, card2]
     total = AddCards(card1, card2)
     count = 2
     if (not isinstance(total, int) and total[1] == 21): return 'BJ', count, player
@@ -111,7 +108,7 @@ def basicStrategy(dealer, card1, deck):
             (isinstance(total, int) and ((total < 17 and dealer in [7, 8, 9, 10, 'A']) or  (total < 13 and dealer in [2, 3, 4, 5, 6]) and not (total == 12 and dealer in [4, 5, 6])))): 
         count = count + 1
         if len(deck) == 0:
-            deck = deckShuffle(1)
+            deck = deckShuffle()
         card = drawACard(deck)
         player = player + [card]
         total = AddCards(total, card)
@@ -124,19 +121,17 @@ def basicStrategy(dealer, card1, deck):
         
         
         
+        
 # Player never hits a hard 12, and thus never busts, but otherwise plays basic strategy. 
-def playerStrategy(dealer, card1, deck):
-    player = [card1]
-    if len(deck) == 0: deck = deckShuffle(1)
-    card2 = drawACard(deck)
-    player.append(card2)
+def neverBust(dealer, card1, card2, deck):
+    player = [card1, card2]
     total = AddCards(card1, card2)
     count = 2
     if (not isinstance(total, int) and total[1] == 21): return 'BJ', count, player
     while not Bust(total) and ((not isinstance(total, int) and ((dealer in [9, 10, 'A'] and total[1] < 19) or (dealer not in [9, 10, 'A'] and total[1] < 18))) or  (isinstance(total, int) and ((total < 12)))): 
         count = count + 1
         if len(deck) == 0:
-            deck = deckShuffle(1)
+            deck = deckShuffle()
         card = drawACard(deck)
         player = player + [card]
         total = AddCards(total, card)
@@ -146,3 +141,24 @@ def playerStrategy(dealer, card1, deck):
     else: 
         if len(total) == 2: return int(total[1]), count, player
         else: return 'Bust', count, player
+        
+# Player mirrors dealer's strategy
+def copyDealer(dealer, card1, card2, deck):
+    player = [card1, card2]
+    total = AddCards(card1, card2)
+    count = 2
+    if (not isinstance(total, int) and total[1] == 21): return 'BJ', count, player
+    while not Bust(total) and ((isinstance(total, int) and total < 17) 
+                                or(not isinstance(total, int) and total[1] < 17)):
+        count = count + 1
+        if len(deck) == 0:
+            deck = deckShuffle()
+        card = drawACard(deck)
+        player = player + [card]
+        total = AddCards(total, card)
+    if isinstance(total, int): 
+        if total > 21: return 'Bust', count, player
+        else: return total, count, player
+    else: 
+        if len(total) == 2: return int(total[1]), count, player
+        else: return 'Bust', count, player        
